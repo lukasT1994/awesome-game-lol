@@ -102,6 +102,38 @@ void placeTops(char** level, int row, int col)
     }
 }
 
+void placeTopLefts(char** level, int row, int col)
+{
+    int i, j;
+    for(i=0; i<row; i++)
+    {
+        for(j=1; j<col; j++)
+        {
+            if(level[i][j] == 't'){
+                if(level[i][j-1] == ' '){
+                    level[i][j] = '1';
+                }
+            }
+        }
+    }
+}
+
+void placeTopRights(char** level, int row, int col)
+{
+    int i, j;
+    for(i=0; i<row; i++)
+    {
+        for(j=0; j<col-1; j++)
+        {
+            if(level[i][j] == 't'){
+                if(level[i][j+1] == ' '){
+                    level[i][j] = '2';
+                }
+            }
+        }
+    }
+}
+
 void placeBots(char** level, int row, int col)
 {
     int i, j;
@@ -118,21 +150,82 @@ void placeBots(char** level, int row, int col)
     }
 }
 
+void placeBotLefts(char** level, int row, int col)
+{
+    int i, j;
+    for(i=0; i<row; i++)
+    {
+        for(j=1; j<col; j++)
+        {
+            if(level[i][j] == 'b'){
+                if(level[i][j-1] == ' '){
+                    level[i][j] = '3';
+                }
+            }
+        }
+    }
+}
+
+void placeBotRights(char** level, int row, int col)
+{
+    int i, j;
+    for(i=0; i<row; i++)
+    {
+        for(j=0; j<col-1; j++)
+        {
+            if(level[i][j] == 'b'){
+                if(level[i][j+1] == ' '){
+                    level[i][j] = '4';
+                }
+            }
+        }
+    }
+}
+
 char** createLevel(int row, int col, int chanceToStartAlive, int birthLimit, int deathLimit, int numberOfSteps)
 {
-    int i;
+    int i, j, k, m;
+    int initRow = row/4;
+    int initCol = col/4;
+    char** initLevel = createEmptyLevel(initRow, initCol);
     char** level = createEmptyLevel(row, col);
-    seedLevel(level, row, col, chanceToStartAlive);
+    seedLevel(initLevel, initRow, initCol, chanceToStartAlive);
     for(i=0; i<numberOfSteps; i++)
     {
-        doSimulationStep(level, row, col, birthLimit, deathLimit);
+        doSimulationStep(initLevel, initRow, initCol, birthLimit, deathLimit);
     }
-    for(i=0; i<col; i++) level[row-1][i] = '0';
-    for(i=0; i<row; i++) {
-        level[i][0] = '0';
-        level[i][col-1] = '0';
+    
+    for(i=0; i<initCol; i++) {
+        initLevel[0][i] = '0';
+        initLevel[initRow-1][i] = '0';
     }
+    for(i=0; i<initRow; i++) {
+        initLevel[i][0] = '0';
+        initLevel[i][initCol-1] = '0';
+    }
+    
+    for(i=0; i<initRow; i++)
+    {
+        for(j=0; j<initCol; j++)
+        {
+            if(initLevel[i][j] == '0')
+            {
+                for(k=0; k<4; k++)
+                {
+                   for(m=0; m<4; m++)
+                   {
+                       level[(i*4)+k][(j*4)+m] = '0';
+                   }
+                }
+            }
+        }
+    }
+    
     placeTops(level, row, col);
+    placeTopLefts(level, row, col);
+    placeTopRights(level, row, col);
     placeBots(level, row, col);
+    placeBotLefts(level, row, col);
+    placeBotRights(level, row, col);
     return level;
 }

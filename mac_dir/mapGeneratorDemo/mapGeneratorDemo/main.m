@@ -1,7 +1,4 @@
-/* This is a very basic tutorial. It will open a
-** 640 x 480 screen and wait for the user to either close
-** the window or press escape
-*/
+
 
 #include "main.h"
 
@@ -15,19 +12,23 @@ int main(int argc, char *argv[])
 {
 	int input = 0;
     int i, j;
-    int row = 40;
-    int col = 72;
-    int tileSize = 20;
-    int chanceToStartAlive = 30;
-    int birthLimit = 4;
-    int deathLimit = 1;
+    int row = 80;
+    int col = 144;
+    int tileSize = 10;
+    int chanceToStartAlive = 40;
+    int birthLimit = 6;
+    int deathLimit = 2;
     int numberOfSteps = 10;
     char** level;
 	
 	SDL_Surface *screen;  /* screen surface */ 
 	SDL_Surface *base;
     SDL_Surface *top;
-    SDL_Surface *bottom;
+    SDL_Surface *topLeft;
+    SDL_Surface *topRight;
+    SDL_Surface *bot;
+    SDL_Surface *botLeft;
+    SDL_Surface *botRight;
 
 
 	/* Start up SDL */
@@ -35,7 +36,11 @@ int main(int argc, char *argv[])
 
 	base = loadImage("gfx/base.png");
     top = loadImage("gfx/top.png");
-    bottom = loadImage("gfx/bot.png");
+    topLeft = loadImage("gfx/topleft.png");
+    topRight = loadImage("gfx/topright.png");
+    bot = loadImage("gfx/bot.png");
+    botLeft = loadImage("gfx/botleft.png");
+    botRight = loadImage("gfx/botright.png");
     
     level = createLevel(row, col, chanceToStartAlive, birthLimit, deathLimit, numberOfSteps);
 
@@ -57,7 +62,11 @@ int main(int argc, char *argv[])
                 {
                     if(level[i][j] == '0') drawImage(screen, base, (j*tileSize), (i*tileSize), 1, 1);
                     if(level[i][j] == 't') drawImage(screen, top, (j*tileSize), (i*tileSize), 1, 1);
-                    if(level[i][j] == 'b') drawImage(screen, bottom, (j*tileSize), (i*tileSize), 1, 1);
+                    if(level[i][j] == '1') drawImage(screen, topLeft, (j*tileSize), (i*tileSize), 1, 1);
+                    if(level[i][j] == '2') drawImage(screen, topRight, (j*tileSize), (i*tileSize), 1, 1);
+                    if(level[i][j] == 'b') drawImage(screen, bot, (j*tileSize), (i*tileSize), 1, 1);
+                    if(level[i][j] == '3') drawImage(screen, botLeft, (j*tileSize), (i*tileSize), 1, 1);
+                    if(level[i][j] == '4') drawImage(screen, botRight, (j*tileSize), (i*tileSize), 1, 1);
                 }
             }
 
