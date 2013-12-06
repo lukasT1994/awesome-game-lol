@@ -185,8 +185,8 @@ void placeBotRights(char** level, int row, int col)
 char** createLevel(int row, int col, int chanceToStartAlive, int birthLimit, int deathLimit, int numberOfSteps)
 {
     int i, j, k, m;
-    int initRow = row/4;
-    int initCol = col/4;
+    int initRow = row/8;
+    int initCol = col/8;
     char** initLevel = createEmptyLevel(initRow, initCol);
     char** level = createEmptyLevel(row, col);
     seedLevel(initLevel, initRow, initCol, chanceToStartAlive);
@@ -210,11 +210,11 @@ char** createLevel(int row, int col, int chanceToStartAlive, int birthLimit, int
         {
             if(initLevel[i][j] == '0')
             {
-                for(k=0; k<4; k++)
+                for(k=0; k<8; k++)
                 {
-                   for(m=0; m<4; m++)
+                   for(m=0; m<8; m++)
                    {
-                       level[(i*4)+k][(j*4)+m] = '0';
+                       level[(i*8)+k][(j*8)+m] = '0';
                    }
                 }
             }

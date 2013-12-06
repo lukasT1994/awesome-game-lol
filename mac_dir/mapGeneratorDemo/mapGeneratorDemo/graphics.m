@@ -1,6 +1,6 @@
 #include "graphics.h"
 
-void drawImage(SDL_Surface *screen, SDL_Surface *image, int x, int y, int xRatio, int yRatio)
+void drawImage(SDL_Surface *screen, SDL_Surface *image, int x, int y, float xRatio, float yRatio)
 {
 	SDL_Rect dest; /* this is an SDL rectangle that can define an area of a surface in terms of x,y coords and width and height */
 	
@@ -34,7 +34,7 @@ SDL_Surface *loadImage(char *name)
 
 		/* Convert the image to the screen's native format */
 	
-		image = SDL_DisplayFormat(temp);
+		image = SDL_DisplayFormatAlpha(temp);
 	
 		SDL_FreeSurface(temp);
 	
