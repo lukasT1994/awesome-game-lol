@@ -12,34 +12,42 @@ typedef struct{
     int y;
 } Player;
 
-void movePlayer(Player* player, int x, int y, int tileSize, int* xMazeOffset, int* yMazeOffset, char** level)
+void movePlayer(Player* player, int x, int y, int tileSize, int* xMazeOffset, int* yMazeOffset, char** level, int row, int col)
 {
     int vBlocked, hBlocked;
     
-    if((level[(player->y - y - *yMazeOffset)/tileSize][((player->x - *xMazeOffset)/tileSize)] != ' ')||
-       (level[(player->y - y - *yMazeOffset)/tileSize][((player->x - *xMazeOffset + 35)/tileSize)-1] != ' ')||
-       (level[(player->y - y - *yMazeOffset + 35)/tileSize][((player->x - *xMazeOffset)/tileSize)] != ' ')||
-       (level[(player->y - y - *yMazeOffset + 35)/tileSize][((player->x - *xMazeOffset + 35)/tileSize)-1] != ' '))
+    if(((player->y - y - *yMazeOffset)/tileSize > 1)&&
+       ((player->y - y - *yMazeOffset)/tileSize < row-1)&&
+       ((player->x - x - *xMazeOffset)/tileSize > 0)&&
+       ((player->x - x - *xMazeOffset)/tileSize < col))
     {
+        if((level[(player->y - y - *yMazeOffset)/tileSize][((player->x - *xMazeOffset)/tileSize)] != ' ')||
+           (level[(player->y - y - *yMazeOffset)/tileSize][((player->x - *xMazeOffset + 35)/tileSize)-1] != ' ')||
+           (level[(player->y - y - *yMazeOffset + 35)/tileSize][((player->x - *xMazeOffset)/tileSize)] != ' ')||
+           (level[(player->y - y - *yMazeOffset + 35)/tileSize][((player->x - *xMazeOffset + 35)/tileSize)-1] != ' '))
+        {
+            vBlocked = 1;
+        }
+        else
+        {
+            vBlocked = 0;
+        }
+        
+        if((level[((player->y - *yMazeOffset)/tileSize)][((player->x - x - *xMazeOffset)/tileSize)] != ' ')||
+           (level[((player->y - *yMazeOffset)/tileSize)][((player->x - x - *xMazeOffset + 35)/tileSize)] != ' ')||
+           (level[((player->y - *yMazeOffset + 35)/tileSize)-1][((player->x - x - *xMazeOffset)/tileSize)] != ' ')||
+           (level[((player->y - *yMazeOffset + 35)/tileSize)-1][((player->x - x - *xMazeOffset + 35)/tileSize)] != ' '))
+        {
+            hBlocked = 1;
+        }
+        else
+        {
+            hBlocked = 0;
+        }
+    } else {
         vBlocked = 1;
-    }
-    else
-    {
-        vBlocked = 0;
-    }
-    
-    if((level[((player->y - *yMazeOffset)/tileSize)][((player->x - x - *xMazeOffset)/tileSize)] != ' ')||
-       (level[((player->y - *yMazeOffset)/tileSize)][((player->x - x - *xMazeOffset + 35)/tileSize)] != ' ')||
-       (level[((player->y - *yMazeOffset + 35)/tileSize)-1][((player->x - x - *xMazeOffset)/tileSize)] != ' ')||
-       (level[((player->y - *yMazeOffset + 35)/tileSize)-1][((player->x - x - *xMazeOffset + 35)/tileSize)] != ' '))
-    {
         hBlocked = 1;
     }
-    else
-    {
-        hBlocked = 0;
-    }
-    
     
     if(!vBlocked)
     {
@@ -84,6 +92,8 @@ int main(int argc, char *argv[])
     int birthLimit = 6;
     int deathLimit = 2;
     int numberOfSteps = 10;
+    int xAxeRange = 0;
+    int yAxeRange = 0;
     char** level;
     
     Player player;
@@ -100,6 +110,9 @@ int main(int argc, char *argv[])
     SDL_Surface *botRight;
     
     SDL_Surface *playerSprite;
+    SDL_Surface *playerRight;
+    SDL_Surface *playerLeft;
+    SDL_Surface *playerCenter;
 
 
 	/* Start up SDL */
@@ -112,7 +125,10 @@ int main(int argc, char *argv[])
     bot = loadImage("gfx/bot.png");
     botLeft = loadImage("gfx/botleft.png");
     botRight = loadImage("gfx/botright.png");
-    playerSprite = loadImage("gfx/player.png");
+    playerRight = loadImage("gfx/player_right.png");
+    playerLeft = loadImage("gfx/player_left.png");
+    playerCenter = loadImage("gfx/player.png");
+    
     
     level = createLevel(row, col, chanceToStartAlive, birthLimit, deathLimit, numberOfSteps);
     
@@ -143,16 +159,47 @@ int main(int argc, char *argv[])
             
             if ( keystate[SDLK_RIGHT] ) x-=5;
             if ( keystate[SDLK_LEFT] ) x+=5;
-            if ( keystate[SDLK_UP] ) y+=5;
-            if ( keystate[SDLK_DOWN] ) y-=5;
+            if ( keystate[SDLK_UP] ) y+=15;
             
-            if (keystate[SDLK_LSHIFT])
-            {
-                x*=4;
-                y*=4;
+            y-=10;
+            
+            if(x<0){
+                playerSprite = playerRight;
+                xAxeRange = 45;
+                yAxeRange = 0;
+            } else if(x>0) {
+                playerSprite = playerLeft;
+                xAxeRange = -35;
+                yAxeRange = 0;
+            } else {
+                playerSprite = playerCenter;
+                xAxeRange = 0;
+                yAxeRange = 0;
+            }
+            if ( keystate[SDLK_DOWN] ){
+                yAxeRange = 45;
+                xAxeRange = 0;
             }
             
-            movePlayer(&player, x, y, tileSize, &xMazeOffset, &yMazeOffset, level);
+            if ( keystate[SDLK_z] ){
+                x = 0;
+                y = 0;
+                for(i=0;i<4;i++)
+                {
+                    for(j=0;j<4;j++)
+                    {
+                        if( ((((player.y-yMazeOffset+yAxeRange)/tileSize)+i)>0)&&
+                            ((((player.y-yMazeOffset+yAxeRange)/tileSize)+i)<row-1)&&
+                            ((((player.x-xMazeOffset+xAxeRange)/tileSize)+j)>0)&&
+                            ((((player.x-xMazeOffset+xAxeRange)/tileSize)+j)<col))
+                        {
+                            level[((player.y-yMazeOffset+yAxeRange)/tileSize)+i][((player.x-xMazeOffset+xAxeRange)/tileSize)+j] = ' ';
+                        }
+                    }
+                }
+            }
+            
+            movePlayer(&player, x, y, tileSize, &xMazeOffset, &yMazeOffset, level, row, col);
             
             SDL_FillRect(screen, NULL, 0x00000000);
 
