@@ -218,6 +218,7 @@ int main(int argc, char *argv[])
                 }
             }
             
+//            printf("%d %d", player.x, player.y);
             drawImage(screen, playerSprite, player.x, player.y, 1, 1);
 
 			SDL_Flip(screen);
