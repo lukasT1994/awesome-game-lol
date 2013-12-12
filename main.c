@@ -242,6 +242,7 @@ int main(int argc, char *argv[])
 {
 	int input = 0;
     int i, j;
+    int e = 0;
     int x = 0;
     int y = 0;
     
