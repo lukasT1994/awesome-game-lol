@@ -17,3 +17,5 @@
 #define YELLOW	0xFFF000
 #define MAGENTA	0xFF00FF
 
+#define fuelMAX 1400
+#define drillMAX 1400
