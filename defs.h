@@ -4,8 +4,8 @@
 #include <SDL/SDL.h>
 //#include "SDLmain.h"
 
-#include <SDL_image/SDL_image.h>
-#include <SDL_ttf/SDL_ttf.h>
+#include <SDL/SDL_image.h>
+#include <SDL/SDL_ttf.h>
 
 
 #define BLACK	0x000000
