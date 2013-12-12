@@ -118,6 +118,7 @@ int askToQuit(SDL_Surface *screen)
             case SDLK_RETURN:
                 switch (menuCounter) {
                     case 0:
+                    	printScores(screen,font,whiteColor);
                         return 1;
                         break;
                     case 1:
