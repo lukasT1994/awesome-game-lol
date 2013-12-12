@@ -23,7 +23,7 @@ SDL_Surface * initScreen(char *title)
 	else
 	{
 		/* Open a 1440 x 800 screen */
-		screen = SDL_SetVideoMode(1440, 800, 32, SDL_HWPALETTE);
+		screen = SDL_SetVideoMode(1440, 800, 32, SDL_HWPALETTE|SDL_FULLSCREEN|SDL_HWSURFACE);
 		if (screen == NULL) /* if that failed, print an error message */
 		{
 			printf("Couldn't set screen mode to 640 x 480: %s\n", SDL_GetError());
