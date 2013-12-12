@@ -12,6 +12,8 @@
 		348B88FE184D00480086EE00 /* input.m in Sources */ = {isa = PBXBuildFile; fileRef = 348B88F7184D00480086EE00 /* input.m */; };
 		348B88FF184D00480086EE00 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 348B88F9184D00480086EE00 /* main.m */; };
 		348B8900184D00480086EE00 /* SDLMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 348B88FB184D00480086EE00 /* SDLMain.m */; };
+		34CDEEE21858F35D00830943 /* SDL_ttf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34CDEEE11858F35D00830943 /* SDL_ttf.framework */; };
+		34CDEEE51858F50800830943 /* title.m in Sources */ = {isa = PBXBuildFile; fileRef = 34CDEEE41858F50800830943 /* title.m */; };
 		34E10EDE1848D5390098D6E7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34E10EDD1848D5390098D6E7 /* Cocoa.framework */; };
 		34E10EE11848D53E0098D6E7 /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34E10EDF1848D53E0098D6E7 /* SDL.framework */; };
 		34E10EE21848D53E0098D6E7 /* SDL_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34E10EE01848D53E0098D6E7 /* SDL_image.framework */; };
@@ -43,6 +45,9 @@
 		348B88F9184D00480086EE00 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = mapGeneratorDemo/main.m; sourceTree = SOURCE_ROOT; };
 		348B88FA184D00480086EE00 /* SDLMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDLMain.h; path = mapGeneratorDemo/SDLMain.h; sourceTree = SOURCE_ROOT; };
 		348B88FB184D00480086EE00 /* SDLMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SDLMain.m; path = mapGeneratorDemo/SDLMain.m; sourceTree = SOURCE_ROOT; };
+		34CDEEE11858F35D00830943 /* SDL_ttf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_ttf.framework; path = System/Library/Frameworks/SDL_ttf.framework; sourceTree = SDKROOT; };
+		34CDEEE31858F50800830943 /* title.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = title.h; path = mapGeneratorDemo/title.h; sourceTree = SOURCE_ROOT; };
+		34CDEEE41858F50800830943 /* title.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = title.m; path = mapGeneratorDemo/title.m; sourceTree = SOURCE_ROOT; };
 		34E10ED11848D4EC0098D6E7 /* mapGeneratorDemo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = mapGeneratorDemo; sourceTree = BUILT_PRODUCTS_DIR; };
 		34E10EDD1848D5390098D6E7 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		34E10EDF1848D53E0098D6E7 /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = System/Library/Frameworks/SDL.framework; sourceTree = SDKROOT; };
@@ -54,6 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				34CDEEE21858F35D00830943 /* SDL_ttf.framework in Frameworks */,
 				34E10EE11848D53E0098D6E7 /* SDL.framework in Frameworks */,
 				34E10EE21848D53E0098D6E7 /* SDL_image.framework in Frameworks */,
 				34E10EDE1848D5390098D6E7 /* Cocoa.framework in Frameworks */,
@@ -66,6 +72,7 @@
 		34E10EC81848D4EC0098D6E7 = {
 			isa = PBXGroup;
 			children = (
+				34CDEEE11858F35D00830943 /* SDL_ttf.framework */,
 				34E10EDF1848D53E0098D6E7 /* SDL.framework */,
 				34E10EE01848D53E0098D6E7 /* SDL_image.framework */,
 				34E10EDD1848D5390098D6E7 /* Cocoa.framework */,
@@ -85,9 +92,11 @@
 		34E10ED31848D4EC0098D6E7 /* mapGeneratorDemo */ = {
 			isa = PBXGroup;
 			children = (
+				348B88F1184D00480086EE00 /* defs.h */,
+				34CDEEE31858F50800830943 /* title.h */,
+				34CDEEE41858F50800830943 /* title.m */,
 				348B88EF184D00480086EE00 /* mapGenerator.h */,
 				348B88F0184D00480086EE00 /* mapGeneratorDemo.1 */,
-				348B88F1184D00480086EE00 /* defs.h */,
 				348B88F2184D00480086EE00 /* graphics.h */,
 				348B88F3184D00480086EE00 /* graphics.m */,
 				348B88F4184D00480086EE00 /* init.h */,
@@ -154,6 +163,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				34CDEEE51858F50800830943 /* title.m in Sources */,
 				348B88FE184D00480086EE00 /* input.m in Sources */,
 				348B88FC184D00480086EE00 /* graphics.m in Sources */,
 				348B88FF184D00480086EE00 /* main.m in Sources */,

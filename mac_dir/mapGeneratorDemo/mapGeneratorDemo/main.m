@@ -1,5 +1,3 @@
-
-
 #include "main.h"
 
 
@@ -94,8 +92,20 @@ int main(int argc, char *argv[])
     int numberOfSteps = 10;
     int xAxeRange = 0;
     int yAxeRange = 0;
+    int lives = 3;
+    int fuel = 140;
     char** level;
     
+    TTF_Init();
+    
+    SDL_Color textcolor = {255,00,00};
+    TTF_Font *font;
+	font = TTF_OpenFont("gfx/PokemonSolid.ttf",25);
+	if(font == NULL){
+        printf("Cannot open font\n");
+        return 0;
+	}
+
     Player player;
     
     Uint8 *keystate;
@@ -113,7 +123,11 @@ int main(int argc, char *argv[])
     SDL_Surface *playerRight;
     SDL_Surface *playerLeft;
     SDL_Surface *playerCenter;
-
+    
+    SDL_Surface *heart;
+    SDL_Surface *fuelSprite;
+    
+    title();
 
 	/* Start up SDL */
 	screen = initScreen("Randomly Generated Map");
@@ -125,9 +139,13 @@ int main(int argc, char *argv[])
     bot = loadImage("gfx/bot.png");
     botLeft = loadImage("gfx/botleft.png");
     botRight = loadImage("gfx/botright.png");
+    
     playerRight = loadImage("gfx/player_right.png");
     playerLeft = loadImage("gfx/player_left.png");
     playerCenter = loadImage("gfx/player.png");
+    
+    heart = loadImage("gfx/heart.png");
+    fuelSprite = loadImage("gfx/fuel.png");
     
     
     level = createLevel(row, col, chanceToStartAlive, birthLimit, deathLimit, numberOfSteps);
@@ -159,7 +177,15 @@ int main(int argc, char *argv[])
             
             if ( keystate[SDLK_RIGHT] ) x-=5;
             if ( keystate[SDLK_LEFT] ) x+=5;
-            if ( keystate[SDLK_UP] ) y+=15;
+            if ( keystate[SDLK_UP] ){
+                if(fuel>0){
+                    y+=15;
+                    fuel--;
+                    x *= 1.2;
+                }
+            } else {
+                if(fuel<140) fuel++;
+            }
             
             y-=10;
             
@@ -220,6 +246,16 @@ int main(int argc, char *argv[])
             
 //            printf("%d %d", player.x, player.y);
             drawImage(screen, playerSprite, player.x, player.y, 1, 1);
+            
+            for(i=0; i<lives; i++)
+            {
+                drawImage(screen, heart, 30 + 50*i, 30, 1, 1);
+            }
+            
+            for(i=0; i<fuel; i++)
+            {
+                drawImage(screen, fuelSprite, 30 + i, 80, 1, 1);
+            }
 
 			SDL_Flip(screen);
 			
