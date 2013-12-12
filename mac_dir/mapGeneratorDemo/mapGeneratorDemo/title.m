@@ -15,6 +15,7 @@ void runCredits(SDL_Surface *screen)
     SDL_Surface *nikilName = NULL;
     SDL_Surface *jayantName = NULL;
     SDL_Surface *lukeName = NULL;
+    SDL_Surface *music = NULL;
     
     SDL_Color yellowColor = {251,202,15};
 	SDL_Color redColor = {255,00,00};
@@ -46,6 +47,7 @@ void runCredits(SDL_Surface *screen)
     nikilName = TTF_RenderText_Solid( font, "Nikil Menon", whiteColor );
     jayantName = TTF_RenderText_Solid( font, "Jayant Solanki", whiteColor );
     lukeName = TTF_RenderText_Solid( font, "Luke Thompson", whiteColor );
+    music = TTF_RenderText_Solid( font, "music by Kevin MacLeod", whiteColor );
     
     while(!input)
     {
@@ -63,6 +65,7 @@ void runCredits(SDL_Surface *screen)
         drawImage(screen,nikilName,NULL,590,380,1,1);
         drawImage(screen,jayantName,NULL,590,410,1,1);
         drawImage(screen,lukeName,NULL,590,440,1,1);
+        drawImage(screen,music,NULL,590,470,1,1);
         
         SDL_Flip(screen);
     }
