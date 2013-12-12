@@ -19,10 +19,10 @@ void movePlayer(Position* player, int x, int y, int tileSize, int* xMazeOffset, 
        ((player->x - x - *xMazeOffset)/tileSize > 0)&&
        ((player->x - x - *xMazeOffset)/tileSize < col))
     {
-        if((level[(player->y - y - *yMazeOffset)/tileSize][((player->x - *xMazeOffset)/tileSize)] != ' ')||
-           (level[(player->y - y - *yMazeOffset)/tileSize][((player->x - *xMazeOffset + 35)/tileSize)-1] != ' ')||
-           (level[(player->y - y - *yMazeOffset + 35)/tileSize][((player->x - *xMazeOffset)/tileSize)] != ' ')||
-           (level[(player->y - y - *yMazeOffset + 35)/tileSize][((player->x - *xMazeOffset + 35)/tileSize)-1] != ' '))
+        if((level[(player->y - y - *yMazeOffset)/tileSize][((player->x - *xMazeOffset)/tileSize)] != ' ')||//topleft
+           (level[(player->y - y - *yMazeOffset)/tileSize][((player->x - *xMazeOffset + 35)/tileSize)] != ' ')||//topright
+           (level[(player->y - y - *yMazeOffset + 35)/tileSize][((player->x - *xMazeOffset)/tileSize)] != ' ')||//botleft
+           (level[(player->y - y - *yMazeOffset + 35)/tileSize][((player->x - *xMazeOffset + 35)/tileSize)] != ' '))//botright
         {
             vBlocked = 1;
         }
@@ -33,8 +33,8 @@ void movePlayer(Position* player, int x, int y, int tileSize, int* xMazeOffset, 
         
         if((level[((player->y - *yMazeOffset)/tileSize)][((player->x - x - *xMazeOffset)/tileSize)] != ' ')||
            (level[((player->y - *yMazeOffset)/tileSize)][((player->x - x - *xMazeOffset + 35)/tileSize)] != ' ')||
-           (level[((player->y - *yMazeOffset + 35)/tileSize)-1][((player->x - x - *xMazeOffset)/tileSize)] != ' ')||
-           (level[((player->y - *yMazeOffset + 35)/tileSize)-1][((player->x - x - *xMazeOffset + 35)/tileSize)] != ' '))
+           (level[((player->y - *yMazeOffset + 35)/tileSize)][((player->x - x - *xMazeOffset)/tileSize)] != ' ')||
+           (level[((player->y - *yMazeOffset + 35)/tileSize)][((player->x - x - *xMazeOffset + 35)/tileSize)] != ' '))
         {
             hBlocked = 1;
         }
@@ -72,6 +72,30 @@ void movePlayer(Position* player, int x, int y, int tileSize, int* xMazeOffset, 
         }
 
     }
+}
+
+SDL_Surface* renderMaze(int tileSize, char** level, int row, int col, SDL_Surface *base, SDL_Surface *top,SDL_Surface *topLeft,SDL_Surface *topRight,SDL_Surface *bot,SDL_Surface *botLeft,SDL_Surface *botRight)
+{
+    int i, j;
+    
+    SDL_Surface* maze;
+    
+    maze = SDL_CreateRGBSurface(SDL_SWSURFACE|SDL_SRCALPHA, col*tileSize, row*tileSize, 32, 0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF);
+    
+    for(i=0;i<row;i++)
+    {
+        for(j=0;j<col;j++)
+        {
+            if(level[i][j] == '0') drawImage(maze, base, j*tileSize, i*tileSize, 1, 1);
+            if(level[i][j] == 't') drawImage(maze, top, j*tileSize, i*tileSize, 1, 1);
+            if(level[i][j] == '1') drawImage(maze, topLeft, j*tileSize, i*tileSize, 1, 1);
+            if(level[i][j] == '2') drawImage(maze, topRight, j*tileSize, i*tileSize, 1, 1);
+            if(level[i][j] == 'b') drawImage(maze, bot, j*tileSize, i*tileSize, 1, 1);
+            if(level[i][j] == '3') drawImage(maze, botLeft, j*tileSize, i*tileSize, 1, 1);
+            if(level[i][j] == '4') drawImage(maze, botRight, j*tileSize, i*tileSize, 1, 1);
+        }
+    }   
+    return maze;
 }
 
 
@@ -115,19 +139,21 @@ int main(int argc, char *argv[])
     
     Uint8 *keystate;
 	
-	SDL_Surface *screen;  /* screen surface */ 
-	SDL_Surface *base;
+	SDL_Surface *screen;  /* screen surface */
+    SDL_Surface *maze = NULL;
+    
+    SDL_Surface *playerSprite;
+    SDL_Surface *playerRight;
+    SDL_Surface *playerLeft;
+    SDL_Surface *playerCenter;
+    
+    SDL_Surface *base;
     SDL_Surface *top;
     SDL_Surface *topLeft;
     SDL_Surface *topRight;
     SDL_Surface *bot;
     SDL_Surface *botLeft;
     SDL_Surface *botRight;
-    
-    SDL_Surface *playerSprite;
-    SDL_Surface *playerRight;
-    SDL_Surface *playerLeft;
-    SDL_Surface *playerCenter;
     
     SDL_Surface *heart;
     
@@ -136,6 +162,15 @@ int main(int argc, char *argv[])
     
     SDL_Surface *drillText;
     SDL_Surface *drillLevel;
+    
+    SDL_Rect digRect;
+    
+    digRect.x = 0;
+    digRect.y = 0;
+    
+    digRect.w = 40;
+    digRect.h = 40;
+    
 
 	/* Start up SDL */
 	screen = initScreen("JetBear");
@@ -146,8 +181,12 @@ int main(int argc, char *argv[])
         SDL_Quit();
         return 0;
     }
-
-	base = loadImage("gfx/base.png");
+    
+    playerRight = loadImage("gfx/player_right.png");
+    playerLeft = loadImage("gfx/player_left.png");
+    playerCenter = loadImage("gfx/player.png");
+    
+    base = loadImage("gfx/base.png");
     top = loadImage("gfx/top.png");
     topLeft = loadImage("gfx/topleft.png");
     topRight = loadImage("gfx/topright.png");
@@ -155,9 +194,13 @@ int main(int argc, char *argv[])
     botLeft = loadImage("gfx/botleft.png");
     botRight = loadImage("gfx/botright.png");
     
-    playerRight = loadImage("gfx/player_right.png");
-    playerLeft = loadImage("gfx/player_left.png");
-    playerCenter = loadImage("gfx/player.png");
+    SDL_SetAlpha(base, 0, 255);
+    SDL_SetAlpha(top, 0, 255);
+    SDL_SetAlpha(topLeft, 0, 255);
+    SDL_SetAlpha(topRight, 0, 255);
+    SDL_SetAlpha(bot, 0, 255);
+    SDL_SetAlpha(botLeft, 0, 255);
+    SDL_SetAlpha(botRight, 0, 255);
     
     heart = loadImage("gfx/heart.png");
     
@@ -183,6 +226,13 @@ int main(int argc, char *argv[])
             
             level = createLevel(row, col, chanceToStartAlive, birthLimit, deathLimit, numberOfSteps);
             
+            maze = renderMaze(tileSize,level, row, col, base, top, topLeft, topRight, bot, botLeft, botRight);
+            if(maze == NULL)
+            {
+                printf("Couldn't render maze\n");
+                menuQuit = 1;
+            }
+            
             player.y = 800 - (32 * tileSize);
             player.x = 40 * tileSize;
             
@@ -206,13 +256,12 @@ int main(int argc, char *argv[])
                 x = 0;
                 y = 0;
                 
-                if ( keystate[SDLK_RIGHT] ) x-=5;
-                if ( keystate[SDLK_LEFT] ) x+=5;
+                if ( keystate[SDLK_RIGHT] ) x-=10;
+                if ( keystate[SDLK_LEFT] ) x+=10;
                 if ( keystate[SDLK_UP] ){
                     if(fuel>0){
-                        y+=15;
+                        y+=20;
                         fuel-=10;
-                        x *= 1.2;
                     }
                 } else {
                     if(fuel<1400) fuel+=5;
@@ -222,11 +271,11 @@ int main(int argc, char *argv[])
                 
                 if(x<0){
                     playerSprite = playerRight;
-                    xAxeRange = 45;
+                    xAxeRange = 40;
                     yAxeRange = 0;
                 } else if(x>0) {
                     playerSprite = playerLeft;
-                    xAxeRange = -35;
+                    xAxeRange = -30;
                     yAxeRange = 0;
                 } else {
                     playerSprite = playerCenter;
@@ -234,7 +283,7 @@ int main(int argc, char *argv[])
                     yAxeRange = 0;
                 }
                 if ( keystate[SDLK_DOWN] ){
-                    yAxeRange = 45;
+                    yAxeRange = 40;
                     xAxeRange = 0;
                 }
                 
@@ -257,27 +306,18 @@ int main(int argc, char *argv[])
                                 }
                             }
                         }
+                        digRect.x = player.x-xMazeOffset+xAxeRange;
+                        digRect.y = player.y-yMazeOffset+yAxeRange;
+                        SDL_FillRect(maze, &digRect, 0x000000FF);
                     }
                 } else if(drillPower<1400) drillPower += 5;
                 
                 movePlayer(&player, x, y, tileSize, &xMazeOffset, &yMazeOffset, level, row, col);
                 
-                SDL_FillRect(screen, NULL, 0x00000000);
+                SDL_FillRect(screen, NULL, 0x0000000);
 
                 /* put loaded image on screen at x, y coords */
-                for(i=0;i<row;i++)
-                {
-                    for(j=0;j<col;j++)
-                    {
-                        if(level[i][j] == '0') drawImage(screen, base, (j*tileSize)+xMazeOffset, yMazeOffset+(i*tileSize), 1, 1);
-                        if(level[i][j] == 't') drawImage(screen, top, (j*tileSize)+xMazeOffset, yMazeOffset+(i*tileSize), 1, 1);
-                        if(level[i][j] == '1') drawImage(screen, topLeft, (j*tileSize)+xMazeOffset, yMazeOffset+(i*tileSize), 1, 1);
-                        if(level[i][j] == '2') drawImage(screen, topRight, (j*tileSize)+xMazeOffset, yMazeOffset+(i*tileSize), 1, 1);
-                        if(level[i][j] == 'b') drawImage(screen, bot, (j*tileSize)+xMazeOffset, yMazeOffset+(i*tileSize), 1, 1);
-                        if(level[i][j] == '3') drawImage(screen, botLeft, (j*tileSize)+xMazeOffset, yMazeOffset+(i*tileSize), 1, 1);
-                        if(level[i][j] == '4') drawImage(screen, botRight, (j*tileSize)+xMazeOffset, yMazeOffset+(i*tileSize), 1, 1);
-                    }
-                }
+                drawImage(screen, maze, xMazeOffset, yMazeOffset, 1, 1);
                 
                 drawImage(screen, playerSprite, player.x, player.y, 1, 1);
                 
