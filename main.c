@@ -281,6 +281,12 @@ int main(int argc, char *argv[])
     CoinPosition* coins = NULL;
     SlugPosition* slugs = NULL;
     
+    char *name;
+	int score; 
+	FILE *scorestream;
+	scorestream = fopen("highscores.txt","a+");
+	char nameput;
+    
     TTF_Init();
     
     SDL_Color textcolor = {255,255,255};
@@ -570,6 +576,14 @@ int main(int argc, char *argv[])
                         if(lives == 0)
                         {
                             displayGameOver(screen);
+                            
+                            while(nameput != '\n'){
+                            	nameput = getInput();
+                            	name[e] = nameput;
+                            	e++
+                            }
+                            
+                            writeScore(name,score,scorestream)
                             menuQuit = 1;
                         }
                     }
