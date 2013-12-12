@@ -2,7 +2,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <SDL/SDL.h>
-#include "SDLmain.h"
+//#include "SDLmain.h"
+
 #include <SDL_image/SDL_image.h>
 #include <SDL_ttf/SDL_ttf.h>
 
