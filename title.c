@@ -60,6 +60,15 @@ void runCredits(SDL_Surface *screen)
         
         SDL_Flip(screen);
     }
+    
+    SDL_FreeSurface(title);
+    SDL_FreeSurface(titleShadow);
+    
+    SDL_FreeSurface(text);
+    SDL_FreeSurface(desName);
+    SDL_FreeSurface(nikilName);
+    SDL_FreeSurface(jayantName);
+    SDL_FreeSurface(lukeName);
 }
 
 int askToQuit(SDL_Surface *screen)
@@ -136,7 +145,10 @@ int askToQuit(SDL_Surface *screen)
         SDL_Flip(screen);
         
     }
-    
+    SDL_FreeSurface(yes);
+    SDL_FreeSurface(no);
+    SDL_FreeSurface(question);
+    SDL_FreeSurface(fader);
     
     return 0;
 }
@@ -178,6 +190,9 @@ void displayLevel(SDL_Surface *screen, int level)
     SDL_Flip(screen);
     
     SDL_Delay(1000);
+    SDL_FreeSurface(title);
+    SDL_FreeSurface(titleShadow);
+    SDL_FreeSurface(fader);
 }
 
 int title(SDL_Surface *screen){
@@ -309,5 +324,12 @@ int title(SDL_Surface *screen){
         
         
     }
+    SDL_FreeSurface(title);
+    SDL_FreeSurface(titleShadow);
+    SDL_FreeSurface(start);
+    SDL_FreeSurface(scores);
+    SDL_FreeSurface(credits);
+    SDL_FreeSurface(quit);
+    
     return 0;
 }
