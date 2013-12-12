@@ -159,6 +159,44 @@ int askToQuit(SDL_Surface *screen)
     return 0;
 }
 
+void displayGameOver(SDL_Surface *screen)
+{
+    
+    TTF_Font *font;
+    
+    SDL_Color redColor = {255,00,00};
+    SDL_Color yellowColor = {251,202,15};
+    
+    SDL_Surface *title = NULL;
+    SDL_Surface *titleShadow = NULL;
+    SDL_Surface *fader = NULL;
+    
+    
+    fader = SDL_CreateRGBSurface(SDL_SRCALPHA, 1440, 800, 32, 0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF);
+    SDL_FillRect(fader, NULL, 0x000000C0);
+    
+    font = TTF_OpenFont("gfx/PokemonSolid.ttf",68);
+	if(font == NULL){
+		printf("Couldn't open font\n");
+	}
+    titleShadow = TTF_RenderText_Solid( font, "Game Over", redColor );
+    font = TTF_OpenFont("gfx/PokemonSolid.ttf",66);
+	if(font == NULL){
+		printf("Couldn't open font\n");
+	}
+    title = TTF_RenderText_Solid( font, "Game Over", yellowColor );
+    
+    drawImage(screen,fader,NULL,0,0,1,1);
+    drawImage(screen,titleShadow,NULL,580,300,1,1);
+    drawImage(screen,title,NULL,580,300,1,1);
+    SDL_Flip(screen);
+    
+    SDL_Delay(2000);
+    SDL_FreeSurface(title);
+    SDL_FreeSurface(titleShadow);
+    SDL_FreeSurface(fader);
+}
+
 void displayLevel(SDL_Surface *screen, int level)
 {
     //int input = 0;

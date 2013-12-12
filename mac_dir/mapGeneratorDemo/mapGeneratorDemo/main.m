@@ -567,7 +567,11 @@ int main(int argc, char *argv[])
                             lives--;
                             shield = 20;
                         }
-                        if(lives == 0) menuQuit = 1;
+                        if(lives == 0)
+                        {
+                            displayGameOver(screen);
+                            menuQuit = 1;
+                        }
                     }
                 }
                 

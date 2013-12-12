@@ -9,3 +9,4 @@ extern SDL_Surface *loadImage(char *name);
 extern int title(SDL_Surface *screen);
 extern int askToQuit(SDL_Surface *screen);
 extern void displayLevel(SDL_Surface *screen, int level);
+extern void displayGameOver(SDL_Surface *screen);
