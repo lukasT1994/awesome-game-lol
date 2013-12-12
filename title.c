@@ -6,6 +6,8 @@ void runCredits(SDL_Surface *screen)
     
     TTF_Font *font;
     
+    SDL_Surface *background = NULL;
+    
     SDL_Surface *title = NULL;
     SDL_Surface *titleShadow = NULL;
     SDL_Surface *text = NULL;
@@ -17,6 +19,8 @@ void runCredits(SDL_Surface *screen)
     SDL_Color yellowColor = {251,202,15};
 	SDL_Color redColor = {255,00,00};
 	SDL_Color whiteColor = {255,255,255};
+    
+    background = IMG_Load("gfx/bg.png");
     
     font = TTF_OpenFont("gfx/PokemonSolid.ttf",30);
 	if(font == NULL){
@@ -49,14 +53,16 @@ void runCredits(SDL_Surface *screen)
         
         SDL_FillRect(screen, NULL, 0x00000000);
         
-        drawImage(screen,titleShadow,490,295,1,1);
-        drawImage(screen,title,490,295,1,1);
+        drawImage(screen, background, NULL, 0, 0, 1, 1);
         
-        drawImage(screen,text,625,300,1,1);
-        drawImage(screen,desName,590,350,1,1);
-        drawImage(screen,nikilName,590,380,1,1);
-        drawImage(screen,jayantName,590,410,1,1);
-        drawImage(screen,lukeName,590,440,1,1);
+        drawImage(screen,titleShadow,NULL,490,295,1,1);
+        drawImage(screen,title,NULL,490,295,1,1);
+        
+        drawImage(screen,text,NULL,625,300,1,1);
+        drawImage(screen,desName,NULL,590,350,1,1);
+        drawImage(screen,nikilName,NULL,590,380,1,1);
+        drawImage(screen,jayantName,NULL,590,410,1,1);
+        drawImage(screen,lukeName,NULL,590,440,1,1);
         
         SDL_Flip(screen);
     }
@@ -96,7 +102,7 @@ int askToQuit(SDL_Surface *screen)
     
     fader = SDL_CreateRGBSurface(SDL_SRCALPHA, 1440, 800, 32, 0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF);
     SDL_FillRect(fader, NULL, 0x000000C0);
-    drawImage(screen,fader,0,0,1,1);
+    drawImage(screen,fader,NULL,0,0,1,1);
     
     while(!quit)
     {
@@ -138,9 +144,9 @@ int askToQuit(SDL_Surface *screen)
                 break;
         }
         
-        drawImage(screen,question,540,500,1,1);
-        drawImage(screen,yes,590,530,1,1);
-        drawImage(screen,no,790,530,1,1);
+        drawImage(screen,question,NULL,540,500,1,1);
+        drawImage(screen,yes,NULL,590,530,1,1);
+        drawImage(screen,no,NULL,790,530,1,1);
         
         SDL_Flip(screen);
         
@@ -184,9 +190,9 @@ void displayLevel(SDL_Surface *screen, int level)
 	}
     title = TTF_RenderText_Solid( font, str, yellowColor );
     
-    drawImage(screen,fader,0,0,1,1);
-    drawImage(screen,titleShadow,580,300,1,1);
-    drawImage(screen,title,580,300,1,1);
+    drawImage(screen,fader,NULL,0,0,1,1);
+    drawImage(screen,titleShadow,NULL,580,300,1,1);
+    drawImage(screen,title,NULL,580,300,1,1);
     SDL_Flip(screen);
     
     SDL_Delay(1000);
@@ -202,6 +208,9 @@ int title(SDL_Surface *screen){
     int input = 0;
     int check = 0;
     
+    FILE *highscores;
+    int score;
+    
 	SDL_Surface *background = NULL;
 	SDL_Surface *title = NULL;
     SDL_Surface *titleShadow = NULL;
@@ -214,7 +223,7 @@ int title(SDL_Surface *screen){
     
 	TTF_Font *font;
     
-	background = IMG_Load("gfx/Terraria");
+	background = IMG_Load("gfx/bg.png");
     
 	//Define Colors
 	SDL_Color yellowColor = {251,202,15};
@@ -261,6 +270,10 @@ int title(SDL_Surface *screen){
                         startGame = 1;
                         break;
                     case 1:
+                        highscores = fopen("scores", "rb");
+                        fread(&score, sizeof(score), 1 , highscores);
+                        fclose(highscores);
+                        printf("%d\n", score);
                         break;
                     case 2:
                         runCredits(screen);
@@ -311,14 +324,16 @@ int title(SDL_Surface *screen){
         
         SDL_FillRect(screen, NULL, 0x00000000);
         
-        drawImage(screen,titleShadow,580,200,1,1);
-        drawImage(screen,title,580,200,1,1);
-        drawImage(screen,instructions,300,400,1,1);
+        drawImage(screen, background, NULL, 0, 0, 1, 1);
         
-        drawImage(screen,start,690,500,1,1);
-        drawImage(screen,scores,655,530,1,1);
-        drawImage(screen,credits,680,560,1,1);
-        drawImage(screen,quit,695,590,1,1);
+        drawImage(screen,titleShadow,NULL,580,200,1,1);
+        drawImage(screen,title,NULL,580,200,1,1);
+        drawImage(screen,instructions,NULL,300,400,1,1);
+        
+        drawImage(screen,start,NULL,690,500,1,1);
+        drawImage(screen,scores,NULL,655,530,1,1);
+        drawImage(screen,credits,NULL,680,560,1,1);
+        drawImage(screen,quit,NULL,695,590,1,1);
         
         SDL_Flip(screen);
         
