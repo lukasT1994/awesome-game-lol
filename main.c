@@ -581,10 +581,10 @@ int main(int argc, char *argv[])
                             while(nameput != '\n'){
                             	nameput = getInput();
                             	name[e] = nameput;
-                            	e++
+                            	e++;
                             }
                             
-                            writeScore(name,score,scorestream)
+                            writeScore(name,score,scorestream);
                             menuQuit = 1;
                         }
                     }
@@ -706,9 +706,7 @@ int main(int argc, char *argv[])
                 
                 if(input == SDLK_ESCAPE)
                 {
-                    
                     menuQuit = askToQuit(screen);
-//                    if(menuQuit) menuQuit = title(screen);
                 }
                 
                 if(input == SDLK_f)
