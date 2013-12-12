@@ -117,8 +117,8 @@ int main(int argc, char *argv[])
     int xAxeRange = 0;
     int yAxeRange = 0;
     int lives = 3;
-    int fuel = 1400;
-    int drillPower = 1400;
+    int fuel = fuelMAX;
+    int drillPower = drillMAX;
     int menuQuit = 0;
     int levelDisplayed = 1;
     int levelNumber = 0;
@@ -264,7 +264,7 @@ int main(int argc, char *argv[])
                         fuel-=10;
                     }
                 } else {
-                    if(fuel<1400) fuel+=5;
+                    if(fuel<fuelMAX) fuel+=5;
                 }
                 
                 y-=10;
@@ -310,7 +310,7 @@ int main(int argc, char *argv[])
                         digRect.y = player.y-yMazeOffset+yAxeRange;
                         SDL_FillRect(maze, &digRect, 0x000000FF);
                     }
-                } else if(drillPower<1400) drillPower += 5;
+                } else if(drillPower<drillMAX) drillPower += 5;
                 
                 movePlayer(&player, x, y, tileSize, &xMazeOffset, &yMazeOffset, level, row, col);
                 
