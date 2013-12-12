@@ -282,7 +282,7 @@ int main(int argc, char *argv[])
     CoinPosition* coins = NULL;
     SlugPosition* slugs = NULL;
     
-    char *name;
+    	char name[50];
 	int score; 
 	FILE *scorestream;
 	scorestream = fopen("highscores.txt","a+");
