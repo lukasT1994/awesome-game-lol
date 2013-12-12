@@ -281,6 +281,15 @@ int main(int argc, char *argv[])
     CoinPosition* coins = NULL;
     SlugPosition* slugs = NULL;
     
+    char *name;
+	int score; 
+	FILE *scorestream;
+	scorestream = fopen("highscores.txt","a+");
+	char *readfile;
+	
+	fgets(readfile,5000,scorestream);
+    
+    
     TTF_Init();
     
     SDL_Color textcolor = {255,255,255};
