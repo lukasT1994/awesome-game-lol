@@ -10,10 +10,14 @@ void writeScore(char* name,int score, FILE* stream){
 return;
 }
 
-void printScores(SDL_Surface *screen,TTF_Font *font,SDL_Color Color,char* scorestring){
+void printScores(SDL_Surface *screen,TTF_Font *font,SDL_Color Color){
 
 	SDL_Surface *scoreboard = NULL;
-
+	FILE *scoreptr = fopen("scoreboard.txt","a+");	
+	
+	char *scorestring;
+	fgets(scorestring,5000,scoreptr);
+	
 	SDL_FillRect(screen,NULL,0x000000);
 
 	scoreboard = TTF_RenderText_Solid(font,scorestring,Color);
@@ -25,5 +29,6 @@ void printScores(SDL_Surface *screen,TTF_Font *font,SDL_Color Color,char* scores
 	SDL_Flip(screen);
 	SDL_FreeSurface(scoreboard);
 
+	fclose(scoreptr);
 	title(screen);
 }
